@@ -6,6 +6,7 @@ import (
 
 	"github.com/geekodour/shd_24_ctf/backend/internal/db"
 	"github.com/geekodour/shd_24_ctf/backend/internal/telemetry"
+	"github.com/geekodour/shd_24_ctf/backend/cmd/ctf/internal/flag"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -24,6 +25,7 @@ type Server struct {
 	Dbpool *pgxpool.Pool // pgx
 	q      *db.Queries   // sqlc
 	logger telemetry.Logger
+	flag *flag.FlagHandler
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -37,11 +39,13 @@ func NewServer(config *ServerOptions) (*Server, error) {
 		return nil, err
 	}
 	queries := db.New(dbpool)
+	flagInstance := flag.NewFlagHandler(queries)
 
 	server := &Server{
 		Dbpool: dbpool,
 		q:      queries,
 		logger: logger,
+		flag: &flagInstance,
 	}
 	server.Mux = addRoutes(server, logger.Logger)
 	return server, nil
