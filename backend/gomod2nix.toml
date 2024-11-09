@@ -7,6 +7,9 @@ schema = 3
   [mod."github.com/go-chi/chi/v5"]
     version = "v5.1.0"
     hash = "sha256-DpVfbPlJe4zQNdBrirWq9Q37/awSu5zb3IJgcuyEED8="
+  [mod."github.com/go-chi/cors"]
+    version = "v1.2.1"
+    hash = "sha256-j/7WxHXw+gFvDmdkud7Xt4ncwsBlZoWKhig0TQkcyo8="
   [mod."github.com/jackc/pgpassfile"]
     version = "v1.0.0"
     hash = "sha256-H0nFbC34/3pZUFnuiQk9W7yvAMh6qJDrqvHp+akBPLM="

@@ -15,7 +15,6 @@ type Flag struct {
 	AnswerOption []byte           `json:"answer_option"`
 	Score        int32            `json:"score"`
 	SeqNum       int32            `json:"seq_num"`
-	Visited      *bool            `json:"visited"`
 	Correct      *bool            `json:"correct"`
 	TeamID       *string          `json:"team_id"`
 	CreatedAt    pgtype.Timestamp `json:"created_at"`
@@ -26,4 +25,5 @@ type Team struct {
 	ID       string `json:"id"`
 	TeamName string `json:"team_name"`
 	Secret   string `json:"secret"`
+	MapUrl   string `json:"map_url"`
 }

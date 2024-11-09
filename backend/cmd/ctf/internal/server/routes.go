@@ -9,6 +9,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	slogchi "github.com/samber/slog-chi"
+	"github.com/go-chi/cors"
 )
 
 
@@ -35,7 +36,15 @@ func FlagRouter(h *flag.FlagHandler) chi.Router {
         })
     })
 
+	r.Use(cors.Handler(cors.Options{
+    AllowedOrigins:   []string{"*"},
+    AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+    AllowCredentials: false,
+    MaxAge:           300, // Maximum value not ignored by any of major browsers
+  }))
+
 	r.Get("/get_flag/{f_id}", h.Get)
+	r.Get("/team/{team_secret}", h.TeamInfo)
 	r.Post("/submit_flag", h.Submit)
 	return r
 }

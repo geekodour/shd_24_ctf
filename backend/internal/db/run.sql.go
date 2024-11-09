@@ -9,13 +9,99 @@ import (
 	"context"
 )
 
+const assignQuestionToTeam = `-- name: AssignQuestionToTeam :exec
+WITH to_update AS (
+    SELECT
+        id
+    FROM
+        flag
+    WHERE
+        team_id IS NULL
+    LIMIT 5)
+UPDATE
+    flag
+SET
+    team_id = $1
+WHERE
+    id IN (
+        SELECT
+            id
+        FROM
+            to_update)
+`
+
+// AssignQuestionToTeam
+//
+//	WITH to_update AS (
+//	    SELECT
+//	        id
+//	    FROM
+//	        flag
+//	    WHERE
+//	        team_id IS NULL
+//	    LIMIT 5)
+//	UPDATE
+//	    flag
+//	SET
+//	    team_id = $1
+//	WHERE
+//	    id IN (
+//	        SELECT
+//	            id
+//	        FROM
+//	            to_update)
+func (q *Queries) AssignQuestionToTeam(ctx context.Context, teamID *string) error {
+	_, err := q.db.Exec(ctx, assignQuestionToTeam, teamID)
+	return err
+}
+
+const checkIfAnswered = `-- name: CheckIfAnswered :one
+SELECT
+    CASE WHEN correct IS NOT NULL
+        AND id = $1 THEN
+        TRUE
+    ELSE
+        FALSE
+    END
+FROM
+    flag
+`
+
+// CheckIfAnswered
+//
+//	SELECT
+//	    CASE WHEN correct IS NOT NULL
+//	        AND id = $1 THEN
+//	        TRUE
+//	    ELSE
+//	        FALSE
+//	    END
+//	FROM
+//	    flag
+func (q *Queries) CheckIfAnswered(ctx context.Context, id string) (bool, error) {
+	row := q.db.QueryRow(ctx, checkIfAnswered, id)
+	var column_1 bool
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
 const getFlag = `-- name: GetFlag :one
-SELECT id, question, answer, answer_option, score, seq_num, visited, correct, team_id, created_at, updated_at FROM flag WHERE id = $1
+SELECT
+    id, question, answer, answer_option, score, seq_num, correct, team_id, created_at, updated_at
+FROM
+    flag
+WHERE
+    id = $1
 `
 
 // GetFlag
 //
-//	SELECT id, question, answer, answer_option, score, seq_num, visited, correct, team_id, created_at, updated_at FROM flag WHERE id = $1
+//	SELECT
+//	    id, question, answer, answer_option, score, seq_num, correct, team_id, created_at, updated_at
+//	FROM
+//	    flag
+//	WHERE
+//	    id = $1
 func (q *Queries) GetFlag(ctx context.Context, id string) (Flag, error) {
 	row := q.db.QueryRow(ctx, getFlag, id)
 	var i Flag
@@ -26,7 +112,6 @@ func (q *Queries) GetFlag(ctx context.Context, id string) (Flag, error) {
 		&i.AnswerOption,
 		&i.Score,
 		&i.SeqNum,
-		&i.Visited,
 		&i.Correct,
 		&i.TeamID,
 		&i.CreatedAt,
@@ -36,15 +121,101 @@ func (q *Queries) GetFlag(ctx context.Context, id string) (Flag, error) {
 }
 
 const getTeam = `-- name: GetTeam :one
-SELECT id, team_name, secret FROM team LIMIT 1
+SELECT
+    id, team_name, secret, map_url
+FROM
+    team
+LIMIT 1
 `
 
 // GetTeam
 //
-//	SELECT id, team_name, secret FROM team LIMIT 1
+//	SELECT
+//	    id, team_name, secret, map_url
+//	FROM
+//	    team
+//	LIMIT 1
 func (q *Queries) GetTeam(ctx context.Context) (Team, error) {
 	row := q.db.QueryRow(ctx, getTeam)
 	var i Team
-	err := row.Scan(&i.ID, &i.TeamName, &i.Secret)
+	err := row.Scan(
+		&i.ID,
+		&i.TeamName,
+		&i.Secret,
+		&i.MapUrl,
+	)
 	return i, err
+}
+
+const getTeamBySecret = `-- name: GetTeamBySecret :one
+SELECT
+    id, team_name, secret, map_url
+FROM
+    team
+WHERE
+    secret = $1
+`
+
+// GetTeamBySecret
+//
+//	SELECT
+//	    id, team_name, secret, map_url
+//	FROM
+//	    team
+//	WHERE
+//	    secret = $1
+func (q *Queries) GetTeamBySecret(ctx context.Context, secret string) (Team, error) {
+	row := q.db.QueryRow(ctx, getTeamBySecret, secret)
+	var i Team
+	err := row.Scan(
+		&i.ID,
+		&i.TeamName,
+		&i.Secret,
+		&i.MapUrl,
+	)
+	return i, err
+}
+
+const markFlagAsCorrect = `-- name: MarkFlagAsCorrect :exec
+UPDATE
+    flag
+SET
+    correct = TRUE
+WHERE
+    id = $1
+`
+
+// MarkFlagAsCorrect
+//
+//	UPDATE
+//	    flag
+//	SET
+//	    correct = TRUE
+//	WHERE
+//	    id = $1
+func (q *Queries) MarkFlagAsCorrect(ctx context.Context, id string) error {
+	_, err := q.db.Exec(ctx, markFlagAsCorrect, id)
+	return err
+}
+
+const markFlagAsIncorrect = `-- name: MarkFlagAsIncorrect :exec
+UPDATE
+    flag
+SET
+    correct = FALSE
+WHERE
+    id = $1
+`
+
+// MarkFlagAsIncorrect
+//
+//	UPDATE
+//	    flag
+//	SET
+//	    correct = FALSE
+//	WHERE
+//	    id = $1
+func (q *Queries) MarkFlagAsIncorrect(ctx context.Context, id string) error {
+	_, err := q.db.Exec(ctx, markFlagAsIncorrect, id)
+	return err
 }

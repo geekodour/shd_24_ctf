@@ -39,7 +39,7 @@ func NewServer(config *ServerOptions) (*Server, error) {
 		return nil, err
 	}
 	queries := db.New(dbpool)
-	flagInstance := flag.NewFlagHandler(queries)
+	flagInstance := flag.NewFlagHandler(queries, dbpool)
 
 	server := &Server{
 		Dbpool: dbpool,

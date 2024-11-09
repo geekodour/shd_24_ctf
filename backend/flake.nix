@@ -35,13 +35,13 @@
 
             # build with: nix build --no-eval-cache .#server_docker
             server_docker = pkgs.dockerTools.buildLayeredImage {
-              name = "geekodour/ctf"
+              name = "geekodour/ctf";
               tag = "latest";
-              contents = with pkgs; [ maxblockno cacert ];
+              # contents = with pkgs; [ maxblockno cacert ];
+              contents = with pkgs; [ server cacert ];
               config = {
-                Entrypoint = ["${entrypoint}/bin/entrypoint.sh"];
-                # NOTE: In the build, have our built package inside site-packages
-                Cmd = "maxblockno.max_block_in_bucket.handler";
+                Entrypoint = ["ls"];
+                # Cmd = "maxblockno.max_block_in_bucket.handler";
               };
             };
           };

@@ -1,11 +1,11 @@
 -- psql -d shd -f ./dummy_populate.sql
-INSERT INTO team (team_name, secret)
+INSERT INTO team (team_name, secret, map_url)
 VALUES
-    ('CyberPhoenix', 'ph03n1x_r1s3s_2024'),
-    ('ByteBusters', 'bust3r5_un1t3_9876'),
-    ('HackMasters', 'mast3r_0f_h4cks_42'),
-    ('NetRunners', 'runn3r5_3dg3_1337'),
-    ('CodeSentinels', 's3nt1n3l_gu4rd_789');
+    ('CyberPhoenix', 'ph03n1x_r1s3s_2024', ''),
+    ('ByteBusters', 'bust3r5_un1t3_9876', ''),
+    ('HackMasters', 'mast3r_0f_h4cks_42', ''),
+    ('NetRunners', 'runn3r5_3dg3_1337', ''),
+    ('CodeSentinels', 's3nt1n3l_gu4rd_789', '');
 
 INSERT INTO flag (question, answer, answer_option, score, seq_num)
 VALUES
@@ -34,3 +34,5 @@ VALUES
     ('What does SQL injection attack target?', 'Database', '["Network", "Database", "Memory", "CPU"]'::jsonb, 150, 23),
     ('Which protocol is used for secure web browsing?', 'HTTPS', '["HTTP", "HTTPS", "FTP", "SMTP"]'::jsonb, 100, 24),
     ('What is the default port for FTP?', '21', '["20", "21", "22", "23"]'::jsonb, 100, 25);
+
+-- UPDATE flag SET team_id = "019310e8-c64f-738e-81a7-3e601dc2a048" where team_id IS NULL LIMIT 5;

@@ -5,7 +5,8 @@ CREATE EXTENSION IF NOT EXISTS pg_uuidv7;
 CREATE TABLE team (
     id text PRIMARY KEY DEFAULT uuid_generate_v7 (),
     team_name text NOT NULL,
-    secret text NOT NULL
+    secret text NOT NULL,
+    map_url text NOT NULL
 );
 
 CREATE TABLE flag (
@@ -15,7 +16,7 @@ CREATE TABLE flag (
     answer_option jsonb NOT NULL,
     score integer NOT NULL,
     seq_num integer NOT NULL,
-    visited boolean,
+    -- visited boolean,
     correct boolean,
     -- team_id text NOT NULL REFERENCES team,
     team_id text REFERENCES team,
