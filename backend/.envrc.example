@@ -1,0 +1,12 @@
+export PROJECT_ROOT=$PWD
+export PROJECT_DATA_DIR=$PWD/.data
+export MIGRATIONS_DIR=$PWD/../.infra/migrations
+
+# postgres
+export PGHOST=localhost
+export PGPORT=7777
+export PGUSER=app_user
+export PGDATABASE=shd
+
+export NIXPKGS_ALLOW_UNFREE=1
+use flake . --impure

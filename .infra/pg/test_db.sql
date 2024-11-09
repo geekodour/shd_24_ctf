@@ -1,0 +1,36 @@
+-- NOTE: this comes after things in in init.sql are done.
+-- See: https://gajus.com/blog/setting-up-postgre-sql-for-running-integration-tests#mounting-a-memory-disk
+-- See: https://supabase.com/blog/postgresql-templates
+-- See: https://fastapi.tiangolo.com/advanced/testing-database/
+--
+-- These changes need not be done in production db
+--
+-- Here's the flow:
+-- 1. We have one single postgres DB(cluster/instance) running.
+--    - Locally: This can be run via docker(many people do this) or in our case,
+--               we'll just re-use the nix local process-compose one.
+--    - CI:      We could spin a separate pg instance per CI build or have one
+--               specifically running also. Depends on usecase. For now we don't plan to
+--               run these tests of CI yet. Local is fine.
+-- 2. Now, for each test we use postgres template to create a temporary
+--    database. Craft the connection string and let the test use it. There are
+--    speed optimzations that can be done here but we don't need them at the
+--    moment.
+-- 3. We now have a nice ephemeral database connection string that we can use in
+--    our tests. This keeps things isolated. At this point the DB will be empty,
+--    so we can populate it with whatever things needed etc. and run our tests.
+--
+-- Other notes:
+-- 1. Now using templates is awesome here, because we can keep using our regular
+--    migration scripts to change our main database out of which we created
+--    template and any test run after that will have the the changes from the
+--    migration in it. So we don't have to manage that separately.
+-- 2. Along with the schema replicated, you also get the data replicated. So If
+--    in any case you're too which has its pros and cons but something to be
+--    aware of. To work around this, we can either not populate the test db
+--    tables ever. Else we can use TRUNCATE in our db fixture where it empties
+--    all tables before test run but we don't need either for now.
+
+\c postgres postgres
+ALTER DATABASE boilerpress WITH is_template TRUE;
+-- usage: CREATE DATABASE foo TEMPLATE boilerpress;

@@ -1,0 +1,68 @@
+default:
+	@just --list
+
+# run all benchmarks
+bench:
+	go test -bench=. -benchmem -cpu=2,4 -count=2 ./...
+
+# NOTE: use: go test ./... -v (for logs in tests)
+# NOTE: use: go test -run <TestFuncName> ./... -v (for logs and isolated test run)
+# NOTE: cleaning cache: go clean -testcache
+# run tests
+test:
+	@echo ">> running tests"
+	gotestsum --format pkgname
+
+# run tests in watch mode
+test-watch:
+	@echo ">> running tests (watch mode)"
+	gotestsum --format pkgname --watch
+
+# run linter
+lint:
+	@echo ">> running linter"
+	golangci-lint run
+
+# run formatter but don't edit
+format:
+	@echo ">> running formatter"
+	gofumpt -d .
+
+# run check for unused packages and download new dependencies if any
+tidy:
+	@echo ">> running check for unused/missing packages"
+	go mod tidy
+	gomod2nix
+unused:
+	@echo ">> running check for unused/missing packages"
+	go mod tidy
+	gomod2nix
+	@git diff --exit-code -- go.sum go.mod
+
+vendor:
+	@echo ">> adds/removes vendored packages based on go.mod"
+	go mod vendor
+
+# build binaries
+build-server:
+	nix build --no-eval-cache .#server
+
+# hot build the server
+build-server-hot:
+	git ls-files -cdmo --exclude-standard | entr -d -c -r go run ./cmd/boileroom/main.go
+
+# build-oldschool:
+# 	GOARCH=amd64 GOOS=linux go build -a -o ./cmd/boileroom/builds/boileroom-amd64-linux ./cmd/boileroom
+
+# Lists supported arch-platorm by go
+list-platforms:
+	go tool dist list
+
+sqlc-generate:
+	sqlc generate -f tools/sqlc/sqlc.yaml
+
+# debug-hot:
+# 	git ls-files -cdmo --exclude-standard | entr -d -c dlv debug ./cmd/boileroom/main.go
+
+debug:
+	dlv debug ./cmd/boileroom/main.go
