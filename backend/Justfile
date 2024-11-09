@@ -49,7 +49,7 @@ build-server:
 
 # hot build the server
 build-server-hot:
-	git ls-files -cdmo --exclude-standard | entr -d -c -r go run ./cmd/boileroom/main.go
+	git ls-files -cdmo --exclude-standard | entr -d -c -r go run ./cmd/ctf/main.go
 
 # build-oldschool:
 # 	GOARCH=amd64 GOOS=linux go build -a -o ./cmd/boileroom/builds/boileroom-amd64-linux ./cmd/boileroom

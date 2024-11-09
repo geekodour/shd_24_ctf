@@ -1,0 +1,15 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "queries"
+    # NOTE: No need to maintain separate schema.sql file
+    # see https://docs.sqlc.dev/en/latest/howto/ddl.html#handling-sql-migrations
+    schema: "../../../.infra/migrations" # goose migration directory
+    gen:
+      go:
+        package: "db"
+        out: "../../internal/db"
+        sql_package: "pgx/v5"
+        emit_json_tags: true
+        emit_pointers_for_null_types: true
+        emit_sql_as_comment: true
