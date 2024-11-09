@@ -14,14 +14,13 @@ type flagSubmitRequestParams struct {
     TeamSecret  string `json:"team_secret"`
     FlagAnswer  string `json:"flag_answer"`
 }
-// type flagSubmitResponseParams struct {}
 
 type flagAttributesResponseParams struct {
     FlagID          string   `json:"flag_id"`
     Question        string   `json:"question"`
-    AnsswerOptions  []string `json:"answer_options"`
-    Score          int      `json:"score"`
-    Sequence       int      `json:"sequence"`
+    AnswerOptions  []string `json:"answer_options"`
+    Score          int32      `json:"score"`
+    Sequence       int32      `json:"sequence"`
 }
 
 type FlagHandler struct {
@@ -36,18 +35,28 @@ func NewFlagHandler(queries *db.Queries) FlagHandler {
 
 func (h *FlagHandler) Get(w http.ResponseWriter, r *http.Request) {
 	flagID := chi.URLParam(r, "f_id")
-	flagAttrs := flagAttributesResponseParams{
-			FlagID: flagID,
+	flagInfo, err := h.q.GetFlag(r.Context(), flagID)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(err)
+		return
 	}
 
-	// TODO: Query DB
+	var answerOpts = []string{}
+    err = json.Unmarshal(flagInfo.AnswerOption, &answerOpts)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(err)
+		return
+	}
 
-	// err := json.NewDecoder(r.Body).Decode(&flagAttrs)
-	// if err != nil {
-	// 	w.WriteHeader(http.StatusBadRequest)
-	// 	json.NewEncoder(w).Encode(err)
-	// 	return
-	// }
+	flagAttrs := flagAttributesResponseParams{
+			FlagID: flagID,
+			Question: flagInfo.Question,
+			AnswerOptions: answerOpts,
+			Score: flagInfo.Score,
+			Sequence: flagInfo.SeqNum,
+	}
 
 	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(flagAttrs)

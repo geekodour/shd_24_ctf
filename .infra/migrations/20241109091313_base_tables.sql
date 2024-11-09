@@ -17,7 +17,8 @@ CREATE TABLE flag (
     seq_num integer NOT NULL,
     visited boolean,
     correct boolean,
-    team_id text NOT NULL REFERENCES team,
+    -- team_id text NOT NULL REFERENCES team,
+    team_id text REFERENCES team,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp DEFAULT CURRENT_TIMESTAMP
 );

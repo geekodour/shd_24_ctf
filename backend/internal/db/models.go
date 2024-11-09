@@ -17,7 +17,7 @@ type Flag struct {
 	SeqNum       int32            `json:"seq_num"`
 	Visited      *bool            `json:"visited"`
 	Correct      *bool            `json:"correct"`
-	TeamID       string           `json:"team_id"`
+	TeamID       *string          `json:"team_id"`
 	CreatedAt    pgtype.Timestamp `json:"created_at"`
 	UpdatedAt    pgtype.Timestamp `json:"updated_at"`
 }

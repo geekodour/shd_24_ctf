@@ -32,6 +32,18 @@
               modules = ./gomod2nix.toml;
               subPackages = [ "cmd/ctf" ];
             };
+
+            # build with: nix build --no-eval-cache .#server_docker
+            server_docker = pkgs.dockerTools.buildLayeredImage {
+              name = "geekodour/ctf"
+              tag = "latest";
+              contents = with pkgs; [ maxblockno cacert ];
+              config = {
+                Entrypoint = ["${entrypoint}/bin/entrypoint.sh"];
+                # NOTE: In the build, have our built package inside site-packages
+                Cmd = "maxblockno.max_block_in_bucket.handler";
+              };
+            };
           };
 
           devShells = let
