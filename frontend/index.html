@@ -158,6 +158,9 @@
         <input type="button" value="Submit" onclick="submitAnswer()">
     </div>
     <p id="responseMessage"></p>
+    
+    <!-- Link to Instructions Page -->
+    <a href="instructions.html">Read the Instructions</a>
 </div>
 
 <script>
@@ -246,7 +249,7 @@
             });
 
             if (response.ok) {
-                responseMessage.textContent = "Congratulations! You've Successfully submited the answer.";
+                responseMessage.textContent = "Congratulations! You've Successfully submitted the answer.";
                 responseMessage.classList.remove("error");
                 responseMessage.classList.add("success");
             } else {
