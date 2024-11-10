@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
+            margin: 20px; /* Increased margin */
             padding: 0;
             background-color: #f9f9f9;
             color: #333;
@@ -18,40 +18,29 @@
             justify-content: center;
             height: 100vh;
         }
-        .container {
-            max-width: 600px;
-            width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
         .container-li {
             max-width: 600px;
             width: 100%;
-            padding: 20px;
+            padding: 50px; /* Increased padding */
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: left;
         }
-        .container1 {
-            max-width: 600px;
-            width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
         h1 {
             color: #ff7e5f;
             margin-bottom: 20px;
+            text-align: center;
         }
         p {
             font-size: 1.2em;
             line-height: 1.6;
             color: #444;
+        }
+        ul {
+            font-size: 1.1em;
+            color: #333;
+            line-height: 1.8;
         }
         a {
             display: inline-block;
@@ -70,19 +59,31 @@
 <body>
 
 <div class="container-li">
-    <h1 style="text-align: center;">Welcome to the Science Hack Day 2024 Capture The Flag event!</h1>
-    <p>
-        <p style="text-align: center;">
-            🗺️ Ready for an Adventure? Here's Your Mission:
-        </p>
-        <ul>
-            <li> Get your treasure map at the team URL: <br> https://shd24.netlify.app/team/?team_secret="secret given to you"<br> </li>
-            <li> Hunt down 5 hidden flags (they're QR codes). </li>
-            <li> Scan each flag with your phone when you find it. </li>
-            <li> Answer the question to claim your points. </li>
-            <li> Choose your own path - tackle the flags in any order you like. </li>
-        </ul>
-    </p>
+    <h1>Welcome to the Science Hack Day 2024 Capture The Flag event!</h1>
+    
+    <p style="text-align: center;">🎮 Your Mission Briefing:</p>
+    
+    <p><strong>First Steps:</strong></p>
+    <ul>
+        <li>Pick ONE ticket from the box - this has your team's secret code.</li>
+        <li>Keep your code secret - it's your key to everything!</li>
+    </ul>
+    
+    <p><strong>Get Your Route:</strong></p>
+    <ul>
+        <li>Access your map: <br>"https://shd24.netlify.app/team/?team_secret=your_secret"<br></li>
+        <li>Your mission: Find 5 hidden flags (QR codes).</li>
+        <li>Scan each flag and answer the question to score.</li>
+        <li>Choose your own path - tackle flags in any order.</li>
+    </ul>
+
+    <p><strong>Team Rules:</strong></p>
+    <ul>
+        <li>Only the first answer from your team counts for each flag.</li>
+        <li>Work together, but coordinate who submits answers.</li>
+    </ul>
+
+    <p style="text-align: center;">Now get out there and start your hunt! 🗺️</p>
 </div>
 
 </body>
