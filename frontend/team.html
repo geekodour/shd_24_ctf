@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Information - SHD Capture The Flag</title>
+    <style>
+        /* General styling for the page */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(95, 126, 255, 0.8), rgba(123, 180, 254, 0.8)), 
+                        url('dna.png'); /* gradient overlay with DNA background */
+            background-size: cover, contain;
+            background-repeat: no-repeat, repeat;
+            background-position: center, center;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            margin: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        h2 {
+            color: #5f7eff;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        #teamName {
+            font-size: 1.5em;
+            color: #444;
+            margin: 20px 0;
+        }
+
+        #mapButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #5f7eff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: none; /* Initially hidden until map URL is loaded */
+        }
+        
+        #mapButton:hover {
+            background-color: #7bb4fe;
+        }
+
+        #responseMessage {
+            font-weight: bold;
+            font-size: 1em;
+            margin-top: 15px;
+        }
+        
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Team Information</h2>
+
+    <!-- Team Name -->
+    <p id="teamName">Loading team name...</p>
+
+    <!-- Map Button -->
+    <button id="mapButton" onclick="openMap()">Open Map</button>
+
+    <!-- Response Message for Errors -->
+    <p id="responseMessage" class="error"></p>
+</div>
+
+<script>
+    const BASE_URL = "https://shd.p.geekodour.org";
+    
+    // Fetch team information based on team secret
+    async function loadTeamInfo(teamSecret) {
+        try {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            teamSecret = urlParams.get('team_secret');
+            const response = await fetch(`${BASE_URL}/team/${teamSecret}`);
+            const teamData = await response.json();
+
+            const teamName = document.getElementById("teamName");
+            const mapButton = document.getElementById("mapButton");
+            const responseMessage = document.getElementById("responseMessage");
+
+            // Display the team name
+            teamName.textContent = teamData.team_name;
+
+            // If map URL is available, enable the map button
+            if (teamData.map_url) {
+                mapButton.style.display = "inline-block"; // Show the button
+                mapButton.dataset.mapUrl = teamData.map_url; // Store map URL in data attribute
+            } else {
+                responseMessage.textContent = "Map URL is not available for this team.";
+            }
+        } catch (error) {
+            console.error("Error loading team info:", error);
+            const responseMessage = document.getElementById("responseMessage");
+            responseMessage.textContent = "Failed to load team information.";
+        }
+    }
+
+    // Open map in a new tab
+    function openMap() {
+        const mapUrl = document.getElementById("mapButton").dataset.mapUrl;
+        if (mapUrl) {
+            window.open(mapUrl, '_blank'); // Open the map URL in a new tab
+        } else {
+            alert("Map URL not available.");
+        }
+    }
+
+    // Load team information on page load
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const teamSecret = urlParams.get('team_secret');
+
+        if (teamSecret) {
+            loadTeamInfo(teamSecret);
+        } else {
+            alert("No team secret provided!");
+        }
+    };
+</script>
+
+</body>
+</html>
