@@ -73,7 +73,6 @@ func main() {
 			_ = server.Shutdown(ctx)
 		})
 	}
-	// TODO: Add workflowEngine go routines
 
 	slog.Error("exited", "reason", g.Run())
 }
