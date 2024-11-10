@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SHD Capture The Flag - Instructions</title>
     <style>
+        /* General body styling */
         body {
             font-family: Arial, sans-serif;
-            margin: 20px; /* Increased margin */
+            margin: 0;
             padding: 0;
             background-color: #f9f9f9;
             color: #333;
@@ -17,31 +18,45 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            box-sizing: border-box;
         }
+
+        /* Container for content with responsive width and padding */
         .container-li {
+            width: 90%;
             max-width: 600px;
-            width: 100%;
-            padding: 50px; /* Increased padding */
+            padding: 20px;  /* Reduced padding for smaller screens */
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: left;
+            margin: 20px;
+            box-sizing: border-box;
         }
+
+        /* Title styling */
         h1 {
             color: #ff7e5f;
             margin-bottom: 20px;
             text-align: center;
+            font-size: 1.8em; /* Scales well on mobile */
         }
+
+        /* Paragraph styling */
         p {
-            font-size: 1.2em;
+            font-size: 1.1em;
             line-height: 1.6;
             color: #444;
         }
+
+        /* List styling */
         ul {
             font-size: 1.1em;
             color: #333;
             line-height: 1.8;
         }
+
+        /* Styling for the action button */
         a {
             display: inline-block;
             margin-top: 20px;
@@ -50,9 +65,24 @@
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
+            text-align: center;
         }
+
         a:hover {
             background-color: #feb47b;
+        }
+
+        /* Responsive adjustments */
+        @media screen and (max-width: 600px) {
+            h1 {
+                font-size: 1.6em; /* Title scales down on small screens */
+            }
+            p, ul {
+                font-size: 1em; /* Adjust text size for smaller screens */
+            }
+            .container-li {
+                padding: 15px; /* Adjust padding for mobile */
+            }
         }
     </style>
 </head>
@@ -71,7 +101,7 @@
     
     <p><strong>Get Your Route:</strong></p>
     <ul>
-        <li>Access your map: <br>"https://shd24.netlify.app/team/?team_secret=your_secret"<br></li>
+        <li>Access your map: <br>"https://shd24.netlify.app/team/?team_secret=your_secret"</li>
         <li>Your mission: Find 5 hidden flags (QR codes).</li>
         <li>Scan each flag and answer the question to score.</li>
         <li>Choose your own path - tackle flags in any order.</li>
