@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHD Capture The Flag</title>
+    <style>
+        /* Background and container styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(255, 126, 95, 0.8), rgba(254, 180, 123, 0.8)), 
+                        url('dna.png'); /* gradient overlay with DNA background */
+            background-size: cover, contain;
+            background-repeat: no-repeat, repeat;
+            background-position: center, center;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            margin: 20px;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent background for readability */
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        h2 {
+            color: #ff7e5f;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Input group and label styling */
+        .input-group {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+            text-align: left;
+        }
+        
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border 0.3s ease;
+        }
+        
+        .input-group input[type="text"]:focus {
+            border-color: #ff7e5f;
+            outline: none;
+        }
+        
+        /* Button styling */
+        .input-group input[type="button"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #ff7e5f;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .input-group input[type="button"]:hover {
+            background-color: #feb47b;
+        }
+        
+        /* Question and choices styling */
+        .question {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #444;
+        }
+        
+        .choices {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .choices li {
+            margin: 8px 0;
+            text-align: left;
+        }
+        
+        .choices input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        
+        .choices label {
+            font-size: 1em;
+            cursor: pointer;
+            color: #555;
+            transition: color 0.3s;
+        }
+        
+        .choices label:hover {
+            color: #ff7e5f;
+        }
+        
+        /* Response message styling */
+        #responseMessage {
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 1em;
+        }
+        
+        .success {
+            color: #4CAF50;
+        }
+        
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>SHD 2024 Capture The Flag</h2>
+
+    <!-- Verification Code Section -->
+    <div class="input-group">
+        <label for="verificationCode">Secret Code:</label>
+        <input type="text" id="verificationCode" name="verificationCode" placeholder="Enter your team's secret here">
+    </div>
+
+    <!-- Question and Choices -->
+    <div id="questionSection" class="question">
+        <p id="questionText"></p>
+        <ul id="choicesList" class="choices"></ul>
+    </div>
+
+    <!-- Submit Button for Verification -->
+    <div class="input-group">
+        <input type="button" value="Submit" onclick="submitAnswer()">
+    </div>
+    <p id="responseMessage"></p>
+</div>
+
+<script>
+    // Fetch question and options from backend
+    const BASE_URL = "http://192.168.132.106:8000";
+    async function loadQuestion(flagID) {
+        try {
+            const response = await fetch(`${BASE_URL}/get_flag/${flagID}`);
+            const questionData = await response.json();
+
+            const questionText = document.getElementById("questionText");
+            const choicesList = document.getElementById("choicesList");
+
+            questionText.textContent = "Q. " + questionData.question; // Display question text
+            choicesList.innerHTML = ''; // Clear previous choices
+
+            questionData.answer_options.forEach((choice, index) => {
+                const li = document.createElement("li");
+
+                // Create a radio button
+                const radioButton = document.createElement("input");
+                radioButton.type = "radio";
+                radioButton.name = "answer"; // Group all radio buttons
+                radioButton.value = choice;
+                radioButton.id = `choice${index}`;
+
+                // Create a label for the radio button
+                const label = document.createElement("label");
+                label.htmlFor = `choice${index}`;
+                label.textContent = choice;
+
+                li.appendChild(radioButton);
+                li.appendChild(label);
+                choicesList.appendChild(li);
+            });
+        } catch (error) {
+            console.error("Error loading question:", error);
+            const responseMessage = document.getElementById("responseMessage");
+            responseMessage.textContent = "Failed to load the question.";
+            responseMessage.classList.add("error");
+        }
+    }
+
+    window.onload = function() {
+        const flagID = new URLSearchParams(window.location.search).get('flag_id');
+        if (flagID) {
+            loadQuestion(flagID);
+        } else {
+            alert("No Flag ID provided!");
+        }
+    };
+
+    // Function to verify code and submit answer
+    async function submitAnswer() {
+        const code = document.getElementById("verificationCode").value.trim();
+        const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+        const responseMessage = document.getElementById("responseMessage");
+
+        // Check if the team's secret code is empty
+        if (!code) {
+            responseMessage.textContent = "Please enter your team's secret code.";
+            responseMessage.classList.add("error");
+            responseMessage.classList.remove("success");
+            return;
+        }
+
+        // Check if an answer is selected
+        if (!selectedAnswer) {
+            responseMessage.textContent = "Please select an answer.";
+            responseMessage.classList.add("error");
+            responseMessage.classList.remove("success");
+            return;
+        }
+
+        const flagID = new URLSearchParams(window.location.search).get('flag_id');
+
+        try {
+            const response = await fetch(`${BASE_URL}/submit_flag`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    team_secret: code,
+                    flag_id: flagID,
+                    flag_answer: selectedAnswer.value // Include selected answer
+                })
+            });
+
+            if (response.ok) {
+                responseMessage.textContent = "Congratulations! You've Successfully submited the answer.";
+                responseMessage.classList.remove("error");
+                responseMessage.classList.add("success");
+            } else {
+                const errorData = await response.json(); // Parse error response from server
+                responseMessage.textContent = errorData.error
+                responseMessage.classList.remove("success");
+                responseMessage.classList.add("error");
+            }
+
+        } catch (error) {
+            responseMessage.textContent = "Error connecting to server.";
+            responseMessage.classList.remove("success");
+            responseMessage.classList.add("error");
+            console.error("Error:", error);
+        }
+    }
+</script>
+
+</body>
+</html>
