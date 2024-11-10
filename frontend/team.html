@@ -52,7 +52,7 @@
             margin-top: 10px;
         }
 
-        #mapButton {
+        #mapButton, #groupButton {
             padding: 10px 20px;
             font-size: 16px;
             color: #fff;
@@ -61,10 +61,11 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            display: none; /* Initially hidden until map URL is loaded */
+            display: none; /* Initially hidden until URLs are loaded */
+            margin: 10px;
         }
         
-        #mapButton:hover {
+        #mapButton:hover, #groupButton:hover {
             background-color: #7bb4fe;
         }
 
@@ -93,6 +94,9 @@
     <!-- Map Button -->
     <button id="mapButton" onclick="openMap()">Open Map</button>
 
+    <!-- WhatsApp Button -->
+    <button id="groupButton" onclick="joinWhatsApp()">Join Your Team's WhatsApp Group</button>
+
     <!-- Response Message for Errors -->
     <p id="responseMessage" class="error"></p>
 
@@ -115,6 +119,7 @@
             const teamName = document.getElementById("teamName");
             const teamSecretElement = document.getElementById("teamSecret");
             const mapButton = document.getElementById("mapButton");
+            const whatsappButton = document.getElementById("whatsappButton");
             const responseMessage = document.getElementById("responseMessage");
 
             // Display the team name
@@ -130,6 +135,14 @@
             } else {
                 responseMessage.textContent = "Map URL is not available for this team.";
             }
+
+            // If WhatsApp URL is available, enable the WhatsApp button
+            if (teamData.group_link) {
+                groupButton.style.display = "inline-block"; // Show the button
+                groupButton.dataset.groupUrl = teamData.group_link; // Store WhatsApp URL in data attribute
+            } else {
+                responseMessage.textContent += "\nWhatsApp group URL is not available for this team.";
+            }
         } catch (error) {
             console.error("Error loading team info:", error);
             const responseMessage = document.getElementById("responseMessage");
@@ -144,6 +157,16 @@
             window.open(mapUrl, '_blank'); // Open the map URL in a new tab
         } else {
             alert("Map URL not available.");
+        }
+    }
+
+    // Join WhatsApp group in a new tab
+    function joinWhatsApp() {
+        const groupUrl = document.getElementById("groupButton").dataset.groupUrl;
+        if (groupUrl) {
+            window.open(groupUrl, '_blank'); // Open the WhatsApp URL in a new tab
+        } else {
+            alert("WhatsApp group URL not available.");
         }
     }
 
