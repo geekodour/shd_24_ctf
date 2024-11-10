@@ -46,6 +46,12 @@
             margin: 20px 0;
         }
 
+        #teamSecret {
+            font-size: 1.2em;
+            color: #888;
+            margin-top: 10px;
+        }
+
         #mapButton {
             padding: 10px 20px;
             font-size: 16px;
@@ -81,6 +87,9 @@
     <!-- Team Name -->
     <p id="teamName">Loading team name...</p>
 
+    <!-- Team Secret -->
+    <p id="teamSecret">Loading team secret...</p>
+
     <!-- Map Button -->
     <button id="mapButton" onclick="openMap()">Open Map</button>
 
@@ -104,11 +113,15 @@
             const teamData = await response.json();
 
             const teamName = document.getElementById("teamName");
+            const teamSecretElement = document.getElementById("teamSecret");
             const mapButton = document.getElementById("mapButton");
             const responseMessage = document.getElementById("responseMessage");
 
             // Display the team name
-            teamName.textContent = teamData.team_name;
+            teamName.textContent = `Team Name: ${teamData.team_name}`;
+
+            // Display the team secret
+            teamSecretElement.textContent = `Team Secret: ${teamSecret}`;
 
             // If map URL is available, enable the map button
             if (teamData.map_url) {
