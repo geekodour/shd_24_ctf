@@ -1,40 +1,40 @@
 -- psql -d shd -f ./dummy_populate.sql
 INSERT INTO team (id, team_name, secret, map_url)
 VALUES
-    ('t1', 'CyberPhoenix', 'ph03n1x_r1s3s_2024', ''),
-    ('t2', 'ByteBusters', 'bust3r5_un1t3_9876', ''),
-    ('t3', 'HackMasters', 'mast3r_0f_h4cks_42', ''),
-    ('t4', 'NetRunners', 'runn3r5_3dg3_1337', ''),
-    ('t5', 'CodeSentinels', 's3nt1n3l_gu4rd_789', '');
+    ('t1', 'adenine', 'atcg', 'https://www.google.com/maps'),
+    ('t2', 'cytosine', 'gcat', 'https://www.google.com/maps'),
+    ('t3', 'guanine', 'tacg', 'https://www.google.com/maps'),
+    ('t4', 'thymine', 'agct', 'https://www.google.com/maps'),
+    ('t5', 'zanthine', 'cgta', 'https://www.google.com/maps');
 
 INSERT INTO flag (id, question, answer, answer_option, score, seq_num)
 VALUES
-    ('f1', 'What is the most common port number for HTTPS?', '443', '["443", "80", "8080", "8443"]'::jsonb, 100, 1),
-    ('f2', 'Which encryption algorithm is used in WPA3?', 'SAE (Simultaneous Authentication of Equals)', '["WEP", "TKIP", "SAE (Simultaneous Authentication of Equals)", "RC4"]'::jsonb, 150, 2),
-    ('f3', 'What command is used to list network interfaces in Linux?', 'ifconfig', '["ipconfig", "ifconfig", "netstat", "networkctl"]'::jsonb, 100, 3),
-    ('f4', 'What is the default port for SSH?', '22', '["21", "22", "23", "25"]'::jsonb, 100, 4),
-    ('f5', 'Which protocol is connectionless?', 'UDP', '["TCP", "UDP", "HTTP", "FTP"]'::jsonb, 125, 5),
+    ('f1aatcg', 'Which organelle is responsible for cellular respiration?', 'Mitochondria', '["Mitochondria", "Golgi Body", "Endoplasmic Reticulum", "Lysosome"]'::jsonb, 100, 1),
+    ('f2attttcg', 'What is the pH of a strong acid?', '0-3', '["0-3", "7", "11-14", "4-6"]'::jsonb, 150, 2),
+    ('f3atccg', 'What is the time complexity of binary search?', 'O(log n)', '["O(n)", "O(log n)", "O(n²)", "O(1)"]'::jsonb, 100, 3),
+    ('f4atcgg', 'According to F = ma, what happens to acceleration if force doubles but mass stays constant?', 'Acceleration doubles', '["Acceleration halves", "Acceleration doubles", "Acceleration stays the same", "Acceleration quadruples"]'::jsonb, 100, 4),
+    ('f5aatcg', 'What happens to current when resistance increases in a circuit with constant voltage?', 'Current decreases', '["Current increases", "Current decreases", "Current stays the same", "Current becomes zero"]'::jsonb, 125, 5),
 
-    ('f6', 'What year was the first computer virus created?', '1971', '["1971", "1981", "1991", "2001"]'::jsonb, 200, 1),
-    ('f7', 'What is the maximum length of an IPv4 address in bits?', '32', '["16", "32", "64", "128"]'::jsonb, 100, 2),
-    ('f8', 'Which hash function is considered cryptographically broken?', 'MD5', '["SHA-256", "MD5", "SHA-3", "BLAKE2"]'::jsonb, 150, 3),
-    ('f9', 'What is the default subnet mask for a Class C network?', '255.255.255.0', '["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"]'::jsonb, 125, 4),
-    ('f10', 'Which port is commonly used for DNS?', '53', '["53", "25", "110", "143"]'::jsonb, 100, 5),
+    ('f6gccat', 'Which process converts glucose to pyruvate?', 'Glycolysis', '["Glycolysis", "Krebs Cycle", "Beta Oxidation", "Gluconeogenesis"]'::jsonb, 100, 1),
+    ('f7gcaat', 'What type of bond forms when electrons are shared equally?', 'Covalent', '["Ionic", "Covalent", "Metallic", "Hydrogen"]'::jsonb, 150, 2),
+    ('f8gcaatt', 'What does HTML stand for?', 'Hypertext Markup Language', '["Hypertext Markup Language", "High Technical Modern Language", "Hypertext Management Logic", "High Text Marking Language"]'::jsonb, 100, 3),
+    ('f9gggcat', 'What is the SI unit of pressure?', 'Pascal', '["Newton", "Pascal", "Joule", "Watt"]'::jsonb, 100, 4),
+    ('f10gcatt', 'Which component amplifies electrical signals?', 'Transistor', '["Diode", "Transistor", "Resistor", "Capacitor"]'::jsonb, 125, 5),
 
-    ('f11', 'What does CSRF stand for?', 'Cross-Site Request Forgery', '["Cross-Site Request Forgery", "Common System Response Format", "Client Server Request Format", "Cross-Site Reference Frame"]'::jsonb, 175, 1),
-    ('f12', 'Which protocol operates at the Network layer of the OSI model?', 'IP', '["TCP", "IP", "HTTP", "FTP"]'::jsonb, 150, 2),
-    ('f13', 'What is the default password for Kali Linux?', 'kali', '["root", "toor", "kali", "admin"]'::jsonb, 100, 3),
-    ('f14', 'Which command shows running processes in Linux?', 'ps', '["ps", "ls", "top", "proc"]'::jsonb, 100, 4),
-    ('f15', 'What is the primary function of a firewall?', 'Network Security', '["Network Security", "Data Encryption", "User Authentication", "Data Compression"]'::jsonb, 125, 5),
+    ('f11taacg', 'What is the primary function of RNA?', 'Protein synthesis', '["DNA replication", "Protein synthesis", "Energy storage", "Cell division"]'::jsonb, 100, 1),
+    ('f12tacccg', 'Which gas makes solutions acidic when dissolved in water?', 'Carbon dioxide', '["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"]'::jsonb, 150, 2),
+    ('f13tacgg', 'What is the purpose of a stack in programming?', 'Last In First Out data storage', '["Random data access", "Last In First Out data storage", "Permanent data storage", "Parallel processing"]'::jsonb, 100, 3),
+    ('f14ttacccgg', 'What is the unit of electric potential difference?', 'Volt', '["Ampere", "Volt", "Ohm", "Watt"]'::jsonb, 100, 4),
+    ('f15taacggg', 'What type of circuit has only one path for current?', 'Series', '["Parallel", "Series", "Complex", "Hybrid"]'::jsonb, 125, 5),
 
-    ('f16', 'Which port is used for HTTP?', '80', '["80", "443", "22", "21"]'::jsonb, 100, 1),
-    ('f17', 'What does XSS stand for?', 'Cross-Site Scripting', '["Cross-Site Scripting", "Extended Security System", "XML Security Service", "X Server System"]'::jsonb, 150, 2),
-    ('f18', 'Which protocol is used for secure email transmission?', 'SMTPS', '["SMTP", "SMTPS", "POP3", "IMAP"]'::jsonb, 125, 3),
-    ('f19', 'What is the maximum theoretical bandwidth of CAT6 cable?', '10 Gbps', '["1 Gbps", "10 Gbps", "40 Gbps", "100 Gbps"]'::jsonb, 150, 4),
-    ('f20', 'Which command is used to change file permissions in Linux?', 'chmod', '["chown", "chmod", "chgrp", "chattr"]'::jsonb, 100, 5),
+    ('f16aagct', 'What process produces ATP without oxygen?', 'Anaerobic respiration', '["Aerobic respiration", "Anaerobic respiration", "Photosynthesis", "Fermentation"]'::jsonb, 100, 1),
+    ('f17aggcct', 'What is the charge of an electron?', 'Negative', '["Positive", "Negative", "Neutral", "Variable"]'::jsonb, 150, 2),
+    ('f18agctt', 'Which data structure uses FIFO principle?', 'Queue', '["Stack", "Queue", "Array", "Tree"]'::jsonb, 100, 3),
+    ('f19agct', 'What is the formula for kinetic energy?', '1/2 mv²', '["mgh", "1/2 mv²", "F=ma", "P=mv"]'::jsonb, 100, 4),
+    ('f20aagctt', 'What does AC stand for in electronics?', 'Alternating Current', '["Alternating Current", "Active Current", "Ampere Current", "Actual Current"]'::jsonb, 125, 5),
 
-    ('f21', 'What is the default gateway IP in most home networks?', '192.168.1.1', '["192.168.1.1", "10.0.0.1", "172.16.0.1", "127.0.0.1"]'::jsonb, 100, 1),
-    ('f22', 'Which encryption algorithm is used in RSA?', 'Public Key', '["Symmetric Key", "Public Key", "Block Cipher", "Stream Cipher"]'::jsonb, 175, 2),
-    ('f23', 'What does SQL injection attack target?', 'Database', '["Network", "Database", "Memory", "CPU"]'::jsonb, 150, 3),
-    ('f24', 'Which protocol is used for secure web browsing?', 'HTTPS', '["HTTP", "HTTPS", "FTP", "SMTP"]'::jsonb, 100, 4),
-    ('f25', 'What is the default port for FTP?', '21', '["20", "21", "22", "23"]'::jsonb, 100, 5);
+    ('f21cggta', 'What is the function of chlorophyll?', 'Light absorption', '["Light absorption", "Sugar storage", "Water storage", "Gas exchange"]'::jsonb, 100, 1),
+    ('f22cgtta', 'What happens in an exothermic reaction?', 'Heat is released', '["Heat is absorbed", "Heat is released", "No temperature change", "Mass is lost"]'::jsonb, 150, 2),
+    ('f23ccccgta', 'What is the smallest unit of digital information?', 'Bit', '["Byte", "Bit", "Kilobyte", "Pixel"]'::jsonb, 100, 3),
+    ('f24cgtaaa', 'What is the function of a convex lens?', 'Converges light', '["Diverges light", "Converges light", "Blocks light", "Splits light"]'::jsonb, 100, 4),
+    ('f25cgta', 'What component opposes change in current?', 'Inductor', '["Capacitor", "Inductor", "Resistor", "Diode"]'::jsonb, 125, 5);

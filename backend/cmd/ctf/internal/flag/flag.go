@@ -74,7 +74,7 @@ func (h *FlagHandler) CheckResponse(ctx context.Context, params flagSubmitReques
 	// check if already answered
 	IsAnswered, err := qtx.CheckIfAnswered(ctx, params.FlagID)
 	if err != nil {
-		return err
+		return fmt.Errorf("already answered: %w", err)
 	}
 	if IsAnswered {
 		return fmt.Errorf("already answered")
@@ -84,8 +84,9 @@ func (h *FlagHandler) CheckResponse(ctx context.Context, params flagSubmitReques
 	submittedSecret := params.TeamSecret
 	_, err = qtx.GetTeamBySecret(ctx, submittedSecret)
 	if err != nil {
-		return err
+		return fmt.Errorf("incorrect secret: %w", err)
 	}
+	fmt.Println(submittedSecret)
 
 	// check if answer is correct
 	submittedAnswer := params.FlagAnswer
@@ -159,15 +160,18 @@ func (h *FlagHandler) Submit(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&params)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(err)
+		json.NewEncoder(w).Encode(err.Error())
 		return
 	}
 
+    // data := []byte("Hello, this is some binary data")
 	err = h.CheckResponse(r.Context(), params)
 	if err != nil {
+		errResp := map[string]string{"error": err.Error()}
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(err)
+		json.NewEncoder(w).Encode(errResp)
 		return
 	}
+	fmt.Println("NO ERROR REPORTED")
 	w.WriteHeader(http.StatusOK)
 }

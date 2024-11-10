@@ -65,6 +65,8 @@ SELECT
     END
 FROM
     flag
+WHERE
+    id = $1
 `
 
 // CheckIfAnswered
@@ -78,6 +80,8 @@ FROM
 //	    END
 //	FROM
 //	    flag
+//	WHERE
+//	    id = $1
 func (q *Queries) CheckIfAnswered(ctx context.Context, id string) (bool, error) {
 	row := q.db.QueryRow(ctx, checkIfAnswered, id)
 	var column_1 bool

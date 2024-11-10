@@ -46,7 +46,9 @@ SELECT
         FALSE
     END
 FROM
-    flag;
+    flag
+WHERE
+    id = $1;
 
 -- name: AssignQuestionToTeam :exec
 WITH to_update AS (
